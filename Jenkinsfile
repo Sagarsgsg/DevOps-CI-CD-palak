@@ -3,7 +3,7 @@ pipeline {
 	
   environment {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
-    REMOTE_SERVER = '13.232.166.41'
+    REMOTE_SERVER = '13.127.176.61'
     REMOTE_USER = 'ubuntu' 	  	  
   }
 	
@@ -78,7 +78,7 @@ pipeline {
     stage('Deploy Docker image to AWS instance') {
       steps {
         script {
-          sshagent(credentials: ['ubuntu-user']) {
+          sshagent(credentials: ['ubuntu-ssh']) {
           sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_SERVER} 'docker stop javaApp || true && docker rm javaApp || true'"
 	  sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_SERVER} 'docker pull sagarsgsg/javawebapp'"
           sh "ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_SERVER} 'docker run --name javaApp -d -p 8081:8081sagarsgsg/javawebapp'"
